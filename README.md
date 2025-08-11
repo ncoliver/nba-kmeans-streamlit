@@ -61,7 +61,6 @@ Your browser will open the dashboard automatically.
 ---
 
 ## 📸 Sneak Peek
-*(Add a screenshot of your Streamlit dashboard here)*  
 ![Screenshot #1](screenshots/step1_yearSelection.png)
 ![Screenshot #2](screenshots/step2_teamSelection.png)
 ![Screenshot #3](screenshots/step3_numOfClusters.png)

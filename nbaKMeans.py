@@ -21,8 +21,13 @@ from sklearn.cluster import KMeans
 
 import streamlit as st
 
+@st.cache_data
+def get_data(file_path):
+  data = pd.read_csv(file_path)
+  return data
+
 with st.spinner("loading data..."):
-  data = pd.read_csv('Regular_Season.csv')
+  data = get_data('Regular_Season.csv')
 
 tab1, tab2 = st.tabs(['documentation', 'test KMeans'])
 with tab1:
@@ -319,8 +324,9 @@ k = min(k, len(dataset))  # simple guard so k ≤ samples
 kmeans = KMeans(n_clusters=k, random_state=42, n_init="auto")
 dataset["cluster"] = kmeans.fit_predict(X_plot)
 
-# --- Plot ---
+
 st.subheader(f"KMeans Clustering — {('League' if team=='League' else team)} — {year}")
+# --- Plot ---
 fig, ax = plt.subplots(figsize=(8, 6))
 scatter = ax.scatter(X_plot[:, 0], X_plot[:, 1], c=dataset["cluster"], cmap="viridis", marker="o")
 ax.set_xlabel("PC1")
@@ -329,7 +335,7 @@ plt.colorbar(scatter, label="Cluster")
 plt.grid(True)
 st.pyplot(fig)
 
+with st.expander("View Player Clusters"):
 # --- Table ---
-st.subheader("Players and Assigned Cluster Labels")
-cols_to_show = [c for c in ["PLAYER","TEAM"] if c in dataset.columns] + ["cluster"]
-st.dataframe(dataset[cols_to_show])
+  cols_to_show = [c for c in ["PLAYER","TEAM"] if c in dataset.columns] + ["cluster"]
+  st.dataframe(dataset[cols_to_show])
